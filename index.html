@@ -16,7 +16,9 @@
   --body:'Inter', system-ui, sans-serif;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+html{overflow-x:clip}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:clip}
+.repair,.verdict,.why,footer{overflow-x:clip}
 h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.02;margin:0;letter-spacing:-.015em;text-wrap:balance}
 p{margin:0;text-wrap:pretty}
 a{color:var(--red)}
@@ -91,6 +93,9 @@ a{color:var(--red)}
 .step.active .card{opacity:1;transform:none;filter:none}
 .step.past .card{opacity:.35;transform:translateX(-20px) scale(.96);filter:blur(1px)}
 .card h3{font-size:clamp(26px,3vw,34px);margin-bottom:12px}
+.cy{display:none;align-items:baseline;gap:10px;margin-bottom:12px;font-family:var(--display);font-weight:800;font-size:44px;line-height:1;color:var(--red)}
+.cy small{font-family:var(--body);font-size:14px;font-weight:700;color:var(--muted)}
+.story.violent .cy small{color:var(--muted)}
 .card .tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border-radius:99px;background:var(--bg2);color:var(--green);margin-bottom:14px}
 .card .tag.red{background:#F6DED8;color:var(--red)}
 .story.violent{background:#2A1712;transition:background .8s}
@@ -100,7 +105,8 @@ a{color:var(--red)}
 
 /* JORNADA (mapa estilizado) */
 .journey{height:320svh;background:var(--bg2)}
-.journey .pin-inner{display:grid;grid-template-rows:auto 1fr;padding:60px 0 30px}
+.journey .pin-inner{display:flex;align-items:center;justify-content:center}
+.jfit{width:100%;display:flex;flex-direction:column;gap:10px}
 .journey h2{font-size:clamp(34px,5vw,60px);max-width:18ch;margin-top:10px}
 .jsvg{width:100%;height:100%;max-height:72svh;display:block}
 .jsvg .route{fill:none;stroke:var(--red);stroke-width:4;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--draw,0))}
@@ -227,12 +233,19 @@ footer .names{color:var(--bg);margin-top:10px}
   .card{padding:24px;transform:translateY(40px) scale(.95)}
   .step.past .card{transform:translateY(-10px) scale(.96)}
   .ledger,.why-grid,.foot-grid,.stats{grid-template-columns:1fr}
-  .sun{width:84px;height:84px;right:8%;top:12%}
+  .sun{width:56px;height:56px;right:6%;top:2%}
+  .hero h1{font-size:clamp(40px,12.5vw,64px)}
+  .hero-inner{padding:76px 18px 34svh}
+  .hero .sub{font-size:16px}
   .hpanel{min-height:56svh;padding:30px 24px}
   .jsvg g.lbl{display:none}
   .jsvg{max-height:42svh}
   .jsteps{display:grid}
-  .journey .pin-inner{padding:40px 0 20px}
+  .story .sticky{display:none}
+  .cy{display:flex!important}
+  .intro p.big{font-size:clamp(22px,6.6vw,34px)}
+  .hpanel{min-height:0}
+  .number .n{font-size:clamp(130px,42vw,220px)}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
@@ -253,7 +266,7 @@ footer .names{color:var(--bg);margin-top:10px}
     <svg class="serra l1" viewBox="0 0 1440 420" preserveAspectRatio="none" aria-hidden="true" style="height:48svh"><polygon points="0,420 0,230 160,150 300,200 470,90 640,170 800,110 990,190 1180,100 1440,180 1440,420" fill="#7FA58B"/></svg>
     <svg class="serra l2" viewBox="0 0 1440 360" preserveAspectRatio="none" aria-hidden="true" style="height:38svh"><polygon points="0,360 0,200 180,110 320,170 520,60 700,150 860,90 1040,170 1220,80 1440,160 1440,360" fill="#2F6B4C"/></svg>
     <svg class="serra l3" viewBox="0 0 1440 460" preserveAspectRatio="none" aria-hidden="true" style="height:calc(26svh + 200px);bottom:-200px"><polygon points="0,460 0,170 220,120 400,160 600,100 820,150 1000,110 1200,160 1440,120 1440,460" fill="#1F4D36"/></svg>
-    <div class="hero-inner">
+    <div class="hero-inner fit">
       <p class="kicker">Corte Interamericana de Direitos Humanos · 2018</p>
       <h1><span class="w">Justiça</span> <span class="w">que</span> <span class="w">demora é</span> <span class="w">injustiça</span></h1>
       <p class="sub">A história do povo Xucuru, que levou o Brasil a um tribunal internacional — e venceu.</p>
@@ -267,7 +280,7 @@ footer .names{color:var(--bg);margin-top:10px}
 <main>
 <section class="intro pin" data-pin id="intro">
   <div class="pin-inner">
-    <div class="wrap">
+    <div class="wrap fit">
       <p class="big" id="introText">Imagine esperar *29 *anos para que o Estado cumpra uma promessa que já está escrita na *Constituição. Foi o que aconteceu com o povo *Xucuru, na Serra do Ororubá, em Pesqueira (PE). Para eles, a terra guarda os antepassados, os rituais e a história de um povo inteiro.</p>
     </div>
   </div>
@@ -305,6 +318,7 @@ footer .names{color:var(--bg);margin-top:10px}
 
 <section class="journey pin" data-pin id="journey" aria-labelledby="journey-title">
   <div class="pin-inner">
+   <div class="fit jfit">
     <div class="wrap">
       <p class="kicker">A jornada</p>
       <h2 id="journey-title">De uma serra em Pernambuco a um tribunal na Costa Rica</h2>
@@ -326,13 +340,14 @@ footer .names{color:var(--bg);margin-top:10px}
         <li class="lbl" data-at=".98"><b>San José (Costa Rica)</b> Corte Interamericana condena o Brasil em 2018</li>
       </ol>
     </div>
+   </div>
   </div>
 </section>
 
 <section class="number pin" data-pin id="number" aria-label="29 anos">
   <div class="pin-inner">
     <div class="rings" aria-hidden="true"><i style="--k:1"></i><i style="--k:2"></i><i style="--k:3"></i><i style="--k:4"></i></div>
-    <div>
+    <div class="fit">
       <div class="n" id="counter">0</div>
       <p>anos separaram o primeiro pedido de demarcação da condenação internacional do Brasil.</p>
     </div>
@@ -555,6 +570,28 @@ footer .names{color:var(--bg);margin-top:10px}
   }
   sizeRights();
 
+
+  // Ajusta blocos fixados para nunca cortarem em telas pequenas ou com fonte ampliada
+  var htScale = 1;
+  function fitAll(){
+    document.querySelectorAll('.fit').forEach(function(el){
+      el.style.scale = 1;
+      var s = Math.min(1, (window.innerHeight * 0.94) / el.offsetHeight);
+      el.style.scale = s;
+    });
+  }
+  fitAll();
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ fitAll(); sizeRights(); update(); });
+  window.addEventListener('resize', fitAll);
+  window.addEventListener('orientationchange', function(){ setTimeout(function(){ fitAll(); sizeRights(); update(); }, 300); });
+
+  // Ano dentro de cada cartão (usado no celular)
+  document.querySelectorAll('.step').forEach(function(st){
+    var y = parseInt(st.dataset.year, 10), n = y - 1989;
+    var d = document.createElement('div'); d.className = 'cy'; d.setAttribute('aria-hidden','true');
+    d.innerHTML = y + (n > 0 ? '<small>' + n + (n === 1 ? ' ano' : ' anos') + ' de espera</small>' : '<small>o começo</small>');
+    st.querySelector('.card').prepend(d);
+  });
   var ticking = false;
   function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(function(){ update(); ticking = false; }); } }
   window.addEventListener('scroll', onScroll, {passive: true});
