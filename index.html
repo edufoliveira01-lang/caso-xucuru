@@ -226,7 +226,7 @@ footer .names{color:var(--bg);margin-top:10px}
   .sticky{height:auto;top:4px;z-index:5;background:inherit;padding:14px 0}
   .story .sticky{background:var(--bg)}
   .story.violent .sticky{background:#2A1712}
-  .year{font-size:72px}
+  .year{font-size:60px}
   .year small{font-size:12px;margin-bottom:4px}
   .track{margin-top:12px}
   .elapsed{font-size:14px;margin-top:8px}
@@ -243,8 +243,7 @@ footer .names{color:var(--bg);margin-top:10px}
   .jsvg g.lbl{display:none}
   .jsvg{max-height:42svh}
   .jsteps{display:grid}
-  .story .sticky{display:none}
-  .cy{display:flex!important}
+  .story .sticky{top:0;z-index:20;padding:10px 0 12px;margin:0 -20px;padding-inline:20px;box-shadow:0 10px 20px -16px rgba(0,0,0,.35)}
   .intro p.big{font-size:clamp(22px,6.6vw,34px)}
   .hpanel{min-height:0}
   .number .n{font-size:clamp(130px,42vw,220px)}
@@ -628,16 +627,24 @@ footer .names{color:var(--bg);margin-top:10px}
     bar.style.width = ((y - start) / (end - start) * 100) + '%';
     el.innerHTML = '<b>' + n + (n === 1 ? ' ano' : ' anos') + '</b> de espera';
   }
-  var stepObs = new IntersectionObserver(function(es){
-    es.forEach(function(e){
-      if(!e.isIntersecting) return;
-      var idx = steps.indexOf(e.target);
-      steps.forEach(function(s, i){ s.classList.toggle('active', i === idx); s.classList.toggle('past', i < idx); });
-      story.classList.toggle('violent', e.target.hasAttribute('data-violent'));
-      setYear(parseInt(e.target.dataset.year, 10));
+  // Passo ativo calculado pela posição de rolagem (funciona em qualquer navegador e dentro de apps)
+  var activeIdx = -1;
+  function updateSteps(){
+    var mid = window.innerHeight * 0.55, best = -1, bestD = 1e9;
+    steps.forEach(function(st, i){
+      var r = st.getBoundingClientRect();
+      if(r.bottom < 0 || r.top > window.innerHeight) return;
+      var d = Math.abs((r.top + r.bottom) / 2 - mid);
+      if(d < bestD){ bestD = d; best = i; }
     });
-  }, {rootMargin: '-45% 0px -45% 0px'});
-  steps.forEach(function(s){ stepObs.observe(s); });
+    if(best < 0 || best === activeIdx) return;
+    activeIdx = best;
+    steps.forEach(function(st, i){ st.classList.toggle('active', i === best); st.classList.toggle('past', i < best); });
+    story.classList.toggle('violent', steps[best].hasAttribute('data-violent'));
+    setYear(parseInt(steps[best].dataset.year, 10));
+  }
+  window.addEventListener('scroll', function(){ requestAnimationFrame(updateSteps); }, {passive: true});
+  updateSteps();
 })();
 </script>
 </body>
