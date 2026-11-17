@@ -174,8 +174,10 @@ a{color:var(--red)}
 .ring svg{width:100%;height:100%;transform:rotate(-90deg)}
 .ring .bg{fill:none;stroke:rgba(255,255,255,.12);stroke-width:12}
 .ring .fg{fill:none;stroke:var(--gold);stroke-width:12;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:calc(1 - .6 * var(--fill,0))}
-.ring b{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-size:40px;font-weight:800;text-align:center;line-height:1}
-.ring b small{display:block;font-family:var(--body);font-size:13px;font-weight:500;color:#CFDDD3;margin-top:4px}
+.ring{display:flex;flex-direction:column;align-items:center;gap:10px;height:auto}
+.ring svg{width:170px;height:170px}
+.ring b{position:absolute;left:0;right:0;top:0;height:170px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:44px;font-weight:800;line-height:1;white-space:nowrap}
+.rcap{font-size:14px;font-weight:600;color:#CFDDD3;text-align:center}
 .score p{max-width:36ch;font-size:19px}
 .ledger{margin-top:50px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px}
 .col h3{font-size:24px;margin-bottom:18px;display:flex;align-items:center;gap:12px}
@@ -394,7 +396,7 @@ footer .names{color:var(--bg);margin-top:10px}
     <h2 class="mask">E então: o Brasil cumpriu?</h2>
     <p class="lead reveal">Em parte. A Corte acompanha cada medida em uma etapa chamada supervisão de cumprimento. Pelo quadro que ela mesma publica, este é o placar:</p>
     <div class="score reveal" id="score">
-      <div class="ring"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="bg" cx="60" cy="60" r="52"/><circle class="fg" cx="60" cy="60" r="52" pathLength="1"/></svg><b><span id="ringNum">0</span>/5<small>medidas cumpridas</small></b></div>
+      <div class="ring"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="bg" cx="60" cy="60" r="52"/><circle class="fg" cx="60" cy="60" r="52" pathLength="1"/></svg><b><span class="rn"><span id="ringNum">0</span>/5</span></b><span class="rcap">medidas cumpridas</span></div>
       <p>Três das cinco medidas principais foram cumpridas. As duas que faltam são justamente as que tratam da terra.</p>
     </div>
     <div class="ledger">
